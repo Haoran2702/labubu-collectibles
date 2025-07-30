@@ -29,5 +29,5 @@ export default function Home() {
     </div>
   );
 }
-// Vercel deployment trigger
+// Force Vercel to use latest commit - deployment trigger
 // Temporary frontend files
