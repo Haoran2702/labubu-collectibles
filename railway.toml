@@ -1,8 +1,9 @@
 [build]
-builder = "nixpacks"
+builder = "DOCKERFILE"
+dockerfilePath = "backend/Dockerfile"
 
 [deploy]
-startCommand = "cd backend && npm start"
+startCommand = "npm start"
 healthcheckPath = "/api/monitoring/health"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
@@ -12,8 +13,4 @@ restartPolicyMaxRetries = 10
 NODE_ENV = "production"
 
 [service]
-name = "labubu-backend"
-
-[build.steps]
-install = "cd backend && npm install"
-build = "cd backend && npx tsc" 
+name = "labubu-backend" 
