@@ -263,7 +263,7 @@ router.post(
 );
 
 // Handle Stripe webhooks
-router.post('/webhook', expressAsyncHandler(async (req: Request, res: Response) => {
+router.post('/webhook', expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   // Check if Stripe is configured
   if (!stripe) {
     res.status(503).json({ error: 'Payment processing not configured' });
@@ -408,7 +408,8 @@ router.post('/refund', authenticateToken, expressAsyncHandler(async (req: Authen
         // Check if Stripe is configured
         if (!stripe) {
           await db.close();
-          return res.status(503).json({ error: 'Payment processing not configured' });
+          res.status(503).json({ error: 'Payment processing not configured' });
+          return;
         }
 
         const refund = await stripe.refunds.create({
