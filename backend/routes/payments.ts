@@ -22,10 +22,12 @@ async function addStatusHistory(db: any, orderId: string, status: string, reason
   `, [orderId, status, reason, updatedBy, processType]);
 }
 
-// Initialize Stripe with secret key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-06-30.basil',
-});
+// Initialize Stripe with secret key (only if key is provided)
+const stripe = process.env.STRIPE_SECRET_KEY 
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2025-06-30.basil',
+    })
+  : null;
 
 // Extend Request interface to include user
 interface AuthenticatedRequest extends Request {
@@ -78,6 +80,11 @@ router.post(
     try {
       const { amount, currency = 'usd', metadata = {} } = req.body;
       
+      // Check if Stripe is configured
+      if (!stripe) {
+        return next(new AppError('Payment processing not configured', 503));
+      }
+
       // Create payment intent
       const paymentIntent = await stripe.paymentIntents.create({
         amount: Math.round(amount * 100), // Convert to cents
@@ -142,6 +149,11 @@ router.post(
       if (fraudRisk.recommendation === 'review') {
         console.log('High-risk transaction detected:', fraudRisk);
         // In production, you might want to flag for manual review
+      }
+
+      // Check if Stripe is configured
+      if (!stripe) {
+        return next(new AppError('Payment processing not configured', 503));
       }
 
       // Retrieve payment intent to verify status
@@ -252,6 +264,12 @@ router.post(
 
 // Handle Stripe webhooks
 router.post('/webhook', expressAsyncHandler(async (req: Request, res: Response) => {
+  // Check if Stripe is configured
+  if (!stripe) {
+    res.status(503).json({ error: 'Payment processing not configured' });
+    return;
+  }
+
   const sig = req.headers['stripe-signature'];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -387,6 +405,12 @@ router.post('/refund', authenticateToken, expressAsyncHandler(async (req: Authen
           }
         }
         
+        // Check if Stripe is configured
+        if (!stripe) {
+          await db.close();
+          return res.status(503).json({ error: 'Payment processing not configured' });
+        }
+
         const refund = await stripe.refunds.create({
           payment_intent: paymentIntentId,
           amount: amount ? Math.round(amount * 100) : undefined, // Partial refund if amount specified
