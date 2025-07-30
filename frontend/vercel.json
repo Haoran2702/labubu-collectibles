@@ -1,10 +1,9 @@
 {
+  "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "framework": "nextjs",
   "installCommand": "npm install",
-  "devCommand": "npm run dev",
-  "regions": ["iad1"],
+  "framework": "nextjs",
   "functions": {
     "app/**/*.tsx": {
       "runtime": "nodejs18.x"
@@ -13,7 +12,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://labubu-backend.railway.app/api/$1"
+      "destination": "https://labubu-collectibles.onrender.com/api/$1"
     }
   ],
   "headers": [
