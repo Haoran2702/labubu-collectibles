@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc",
+    "build": "npx tsc",
     "dev": "ts-node app.ts",
     "start": "node ./dist/bin/www.js",
     "seed": "ts-node seed-data.ts",

@@ -12,4 +12,8 @@ restartPolicyMaxRetries = 10
 NODE_ENV = "production"
 
 [service]
-name = "labubu-backend" 
+name = "labubu-backend"
+
+[build.steps]
+install = "cd backend && npm install"
+build = "cd backend && npx tsc" 
