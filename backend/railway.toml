@@ -1,7 +1,6 @@
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "backend/Dockerfile"
-context = "backend"
+dockerfilePath = "Dockerfile"
 
 [deploy]
 startCommand = "npm start"
@@ -14,8 +13,4 @@ restartPolicyMaxRetries = 10
 NODE_ENV = "production"
 
 [service]
-name = "labubu-backend"
-
-[build.steps]
-install = "npm install"
-build = "npx tsc" 
+name = "labubu-backend" 
