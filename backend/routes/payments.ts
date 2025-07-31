@@ -25,7 +25,7 @@ async function addStatusHistory(db: any, orderId: string, status: string, reason
 // Initialize Stripe with secret key (only if key is provided)
 const stripe = process.env.STRIPE_SECRET_KEY 
   ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2025-06-30.basil',
+      apiVersion: '2025-07-30.basil',
     })
   : null;
 

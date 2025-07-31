@@ -40,11 +40,11 @@ router.get('/test', expressAsyncHandler(async (req, res) => {
     console.error('Database test error:', error);
     res.status(500).json({
       status: 'error',
-      message: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: process.env.NODE_ENV === 'development' && error instanceof Error ? error.stack : undefined
     });
   }
-});
+}));
 
 // GET /products - list all products with search and filtering
 router.get('/', expressAsyncHandler(async (req, res) => {
