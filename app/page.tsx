@@ -1,3 +1,4 @@
+// Force Vercel to use latest commit - 9872f2c
 import Hero from "./components/Hero";
 import FeaturedProducts from "./components/FeaturedProducts";
 import Features from "./components/Features";
@@ -29,5 +30,5 @@ export default function Home() {
     </div>
   );
 }
-// Force Vercel to use latest commit - deployment trigger
+// Vercel deployment trigger
 // Temporary frontend files
