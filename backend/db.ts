@@ -5,8 +5,11 @@ import { open } from 'sqlite';
 import path from 'path';
 
 export async function openDb() {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const dbPath = isProduction ? '/tmp/database.sqlite' : path.join(__dirname, 'database.sqlite');
+  
   return open({
-    filename: ':memory:', // Use in-memory database for testing
+    filename: dbPath,
     driver: sqlite3.Database
   });
 }
@@ -15,6 +18,9 @@ export async function openDb() {
 export async function initDb() {
   console.log("Initializing database...");
   const db = await openDb();
+  
+  // Enable foreign keys
+  await db.exec('PRAGMA foreign_keys = ON;');
   await db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -39,29 +39,39 @@ async function initializeDatabase() {
     await initDb();
     console.log('Database initialized successfully');
     
-    // Test database connection
+    // Test database connection and check products
     const { openDb } = await import('./db');
     const db = await openDb();
     console.log('Database connection test successful');
     
-    // Check if products table exists
+    // Check if products table exists and has data
     const tableCheck = await db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='products'");
     console.log('Products table exists:', !!tableCheck);
     
+    let shouldSeed = false;
     if (tableCheck) {
       const productCount = await db.get("SELECT COUNT(*) as count FROM products");
       console.log('Number of products in database:', productCount.count);
+      shouldSeed = productCount.count === 0;
+    } else {
+      shouldSeed = true;
     }
     
     await db.close();
     
-    // Seed the database with products
-    console.log('Seeding database with products...');
-    const { seedDatabase } = await import('./seed-data');
-    await seedDatabase();
-    console.log('Database seeded successfully');
+    // Only seed if database is empty
+    if (shouldSeed) {
+      console.log('Seeding database with products...');
+      const { seedDatabase } = await import('./seed-data');
+      await seedDatabase();
+      console.log('Database seeded successfully');
+    } else {
+      console.log('Database already has products, skipping seeding');
+    }
   } catch (error) {
     console.error('Failed to initialize database:', error);
+    // Don't exit the process, just log the error
+    console.log('Continuing with application startup...');
   }
 }
 
