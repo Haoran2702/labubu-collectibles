@@ -47,6 +47,7 @@ export async function initDb() {
       description TEXT,
       price REAL NOT NULL,
       imageUrl TEXT,
+      collection TEXT,
       stock INTEGER DEFAULT 0,
       sku TEXT UNIQUE,
       weight REAL,
