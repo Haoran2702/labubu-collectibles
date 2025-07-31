@@ -39,6 +39,22 @@ async function initializeDatabase() {
     await initDb();
     console.log('Database initialized successfully');
     
+    // Test database connection
+    const { openDb } = await import('./db');
+    const db = await openDb();
+    console.log('Database connection test successful');
+    
+    // Check if products table exists
+    const tableCheck = await db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='products'");
+    console.log('Products table exists:', !!tableCheck);
+    
+    if (tableCheck) {
+      const productCount = await db.get("SELECT COUNT(*) as count FROM products");
+      console.log('Number of products in database:', productCount.count);
+    }
+    
+    await db.close();
+    
     // Seed the database with products
     console.log('Seeding database with products...');
     const { seedDatabase } = await import('./seed-data');
