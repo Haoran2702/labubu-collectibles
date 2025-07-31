@@ -1,4 +1,5 @@
-// Force Vercel to use latest commit - 9872f2c
+// Force Vercel to use latest commit - c296584
+// Clean deployment with heroicons dependency
 import Hero from "./components/Hero";
 import FeaturedProducts from "./components/FeaturedProducts";
 import Features from "./components/Features";
