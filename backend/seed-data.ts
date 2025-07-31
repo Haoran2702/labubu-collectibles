@@ -30,7 +30,7 @@ const products = [
   { name: 'Box', collection: 'Exciting Macarons', price: 19.99, imageUrl: '/product_images/20231026_101601_612582__1200x1200.jpg' },
 ];
 
-async function seed() {
+export async function seedDatabase() {
   const db = await openDb();
   await db.run('DELETE FROM products');
   for (const product of products) {
@@ -76,6 +76,11 @@ async function seed() {
   console.log('Marketing data seeded successfully');
   await db.close();
   console.log('Seeded ONLY Labubu products!');
+}
+
+// Keep the original seed function for backward compatibility
+async function seed() {
+  await seedDatabase();
 }
 
 seed(); 

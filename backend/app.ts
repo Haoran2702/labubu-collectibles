@@ -28,8 +28,29 @@ import fraudRouter from './routes/fraud';
 import monitoringRouter from './routes/monitoring';
 import { AppError } from './errors';
 import { sanitizeInput } from './middleware/validation';
+import { initDb } from './db';
 
 const app: Application = express();
+
+// Initialize database on startup
+async function initializeDatabase() {
+  try {
+    console.log('Initializing database...');
+    await initDb();
+    console.log('Database initialized successfully');
+    
+    // Seed the database with products
+    console.log('Seeding database with products...');
+    const { seedDatabase } = await import('./seed-data');
+    await seedDatabase();
+    console.log('Database seeded successfully');
+  } catch (error) {
+    console.error('Failed to initialize database:', error);
+  }
+}
+
+// Initialize database
+initializeDatabase();
 
 // Rate limiting
 const limiter = rateLimit({
