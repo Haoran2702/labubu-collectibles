@@ -6,7 +6,7 @@ import path from 'path';
 
 export async function openDb() {
   return open({
-    filename: path.join(__dirname, 'database.sqlite'),
+    filename: ':memory:', // Use in-memory database for testing
     driver: sqlite3.Database
   });
 }
