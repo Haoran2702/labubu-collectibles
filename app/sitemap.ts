@@ -40,7 +40,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic product pages
   let productPages: MetadataRoute.Sitemap = []
   try {
-    const response = await fetch(`${process.env.BACKEND_URL || 'http://localhost:3001'}/api/products`)
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+    const response = await fetch(`${apiUrl}/api/products`)
     if (response.ok) {
       const data = await response.json()
       const products = data.products || data
