@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         aggregateTimeout: 300,
       };
     }
+    
+    // Exclude backend directory from all builds
+    config.externals = config.externals || [];
+    config.externals.push('./backend/**');
+    
     return config;
   },
   

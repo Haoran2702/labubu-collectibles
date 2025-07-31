@@ -1,0 +1,10 @@
+backend/
+backend/**
+*.md
+deployment.md
+TODO.md
+README.md
+.git/
+logs/
+product_images/
+.DS_Store
