@@ -2,11 +2,5 @@
   "version": 2,
   "framework": "nextjs",
   "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./backend",
-  "functions": {
-    "app/**": {
-      "runtime": "nodejs20.x"
-    }
-  }
+  "outputDirectory": ".next"
 } 
