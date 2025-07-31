@@ -2,8 +2,8 @@
 const getApiUrl = () => {
   // Check if we're in production (Vercel)
   if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
-    // In production, use relative URLs for same-origin requests
-    return '';
+    // In production, use Render backend
+    return 'https://labubu-collectibles.onrender.com';
   }
   
   // In development, use localhost
