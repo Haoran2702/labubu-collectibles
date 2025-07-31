@@ -8,6 +8,15 @@ import cache from '../cache';
 
 const router = Router();
 
+// Test endpoint to check if the route is working
+router.get('/ping', expressAsyncHandler(async (req, res) => {
+  res.json({
+    status: 'ok',
+    message: 'Products route is working',
+    timestamp: new Date().toISOString()
+  });
+}));
+
 // Test endpoint to check database status
 router.get('/test', expressAsyncHandler(async (req, res) => {
   try {
