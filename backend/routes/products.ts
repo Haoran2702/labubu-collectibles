@@ -8,6 +8,29 @@ import cache from '../cache';
 
 const router = Router();
 
+// Test endpoint to check database status
+router.get('/test', expressAsyncHandler(async (req, res) => {
+  try {
+    const db = await openDb();
+    const tableCheck = await db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='products'");
+    const productCount = tableCheck ? await db.get("SELECT COUNT(*) as count FROM products") : { count: 0 };
+    await db.close();
+    
+    res.json({
+      status: 'ok',
+      tableExists: !!tableCheck,
+      productCount: productCount.count,
+      message: 'Database test successful'
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
+  }
+});
+
 // GET /products - list all products with search and filtering
 router.get('/', expressAsyncHandler(async (req, res) => {
   // Only cache if no search/filter params
