@@ -11,18 +11,24 @@ const router = Router();
 // Test endpoint to check database status
 router.get('/test', expressAsyncHandler(async (req, res) => {
   try {
+    console.log('Testing database connection...');
     const db = await openDb();
-    const tableCheck = await db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='products'");
-    const productCount = tableCheck ? await db.get("SELECT COUNT(*) as count FROM products") : { count: 0 };
+    console.log('Database opened successfully');
+    
+    // Try a simple query
+    const result = await db.get("SELECT 1 as test");
+    console.log('Simple query result:', result);
+    
     await db.close();
+    console.log('Database closed successfully');
     
     res.json({
       status: 'ok',
-      tableExists: !!tableCheck,
-      productCount: productCount.count,
-      message: 'Database test successful'
+      message: 'Database connection successful',
+      test: result
     });
   } catch (error) {
+    console.error('Database test error:', error);
     res.status(500).json({
       status: 'error',
       message: error.message,
