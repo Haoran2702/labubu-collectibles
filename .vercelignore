@@ -1,5 +1,4 @@
 backend/
-backend/**
 *.md
 deployment.md
 TODO.md
@@ -7,3 +6,4 @@ README.md
 .git/
 logs/
 .DS_Store
+node_modules/
