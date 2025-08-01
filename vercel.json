@@ -1,41 +1,10 @@
 {
   "version": 2,
   "framework": "nextjs",
-  "functions": {
-    "app/**/*.tsx": {
-      "runtime": "@vercel/node@3.0.19"
-    }
-  },
-  "public": {
-    "source": "public/**",
-    "destination": "/"
-  },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://labubu-collectibles.onrender.com/api/$1"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico",
-      "headers": {
-        "cache-control": "public, max-age=86400"
-      }
-    },
-    {
-      "src": "/robots.txt", 
-      "dest": "/robots.txt"
-    },
-    {
-      "src": "/product_images/(.*)",
-      "dest": "/product_images/$1",
-      "headers": {
-        "cache-control": "public, max-age=86400"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/api/:path*",
+      "destination": "https://labubu-collectibles.onrender.com/api/:path*"
     }
   ]
 }
