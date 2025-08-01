@@ -1,23 +1,22 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   trailingSlash: false,
   
-  // Exclude backend directory from Next.js build
-  experimental: {
-    externalDir: true,
-  },
-  
-  webpack: (config, { isServer }) => {
-    // Exclude backend directory from webpack compilation
-    config.resolve.alias = {
-      ...config.resolve.alias,
-    };
+  webpack: (config, { dev, isServer }) => {
+    // Completely ignore backend directory
+    config.module.rules.push({
+      test: /backend[/\\]/,
+      loader: 'ignore-loader'
+    });
     
-    // Ignore backend files completely
-    config.externals = config.externals || [];
-    if (isServer) {
-      config.externals.push(/^backend\//)
-    }
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      path: false,
+      crypto: false,
+    };
     
     return config;
   },
