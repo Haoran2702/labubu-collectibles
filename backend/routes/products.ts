@@ -479,4 +479,51 @@ router.delete('/:id', requireAuth, expressAsyncHandler(async (req, res, next) =>
   res.status(204).end();
 }));
 
+// GET /images/:filename - serve product images
+router.get('/images/:filename', expressAsyncHandler(async (req, res) => {
+  const path = require('path');
+  const fs = require('fs');
+  
+  const filename = req.params.filename;
+  
+  // Security: only allow certain file extensions
+  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+  const ext = path.extname(filename).toLowerCase();
+  
+  if (!allowedExtensions.includes(ext)) {
+    return res.status(400).json({ error: 'Invalid file type' });
+  }
+  
+  // Look for the file in the backend's public/product_images directory
+  const imagePath = path.join(process.cwd(), 'public', 'product_images', filename);
+  
+  try {
+    // Check if file exists
+    if (!fs.existsSync(imagePath)) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+    
+    // Set appropriate content type
+    const contentTypes: Record<string, string> = {
+      '.jpg': 'image/jpeg',
+      '.jpeg': 'image/jpeg', 
+      '.png': 'image/png',
+      '.gif': 'image/gif',
+      '.webp': 'image/webp',
+      '.svg': 'image/svg+xml'
+    };
+    
+    res.setHeader('Content-Type', contentTypes[ext] || 'application/octet-stream');
+    res.setHeader('Cache-Control', 'public, max-age=86400'); // 1 day cache
+    
+    // Stream the file
+    const stream = fs.createReadStream(imagePath);
+    stream.pipe(res);
+    
+  } catch (error) {
+    console.error('Error serving image:', error);
+    res.status(500).json({ error: 'Failed to serve image' });
+  }
+}));
+
 export default router; 
