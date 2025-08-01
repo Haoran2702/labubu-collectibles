@@ -1,9 +1,17 @@
 {
   "version": 2,
+  "framework": "nextjs",
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "functions": {},
-  "public": true
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://labubu-collectibles.onrender.com/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
 }
