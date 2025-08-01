@@ -1,12 +1,7 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-  
-  // Ensure static files are properly served
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   trailingSlash: false,
   
-  // API rewrites for production
   async rewrites() {
     return [
       {
@@ -17,4 +12,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
