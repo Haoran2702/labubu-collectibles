@@ -147,6 +147,44 @@ export async function initDb() {
       createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE
     );
+    
+    CREATE TABLE IF NOT EXISTS email_campaigns (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      subject TEXT NOT NULL,
+      content TEXT NOT NULL,
+      targetAudience TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'draft',
+      sentCount INTEGER DEFAULT 0,
+      openRate REAL DEFAULT 0,
+      clickRate REAL DEFAULT 0,
+      createdAt TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+    
+    CREATE TABLE IF NOT EXISTS discount_codes (
+      id TEXT PRIMARY KEY,
+      code TEXT NOT NULL UNIQUE,
+      type TEXT NOT NULL,
+      value REAL NOT NULL,
+      minOrderAmount REAL DEFAULT 0,
+      maxUses INTEGER DEFAULT 0,
+      usedCount INTEGER DEFAULT 0,
+      validFrom TEXT NOT NULL,
+      validUntil TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'active'
+    );
+    
+    CREATE TABLE IF NOT EXISTS automation_rules (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      triggerType TEXT NOT NULL,
+      conditions TEXT NOT NULL,
+      actions TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'active',
+      triggeredCount INTEGER DEFAULT 0,
+      convertedCount INTEGER DEFAULT 0,
+      createdAt TEXT DEFAULT CURRENT_TIMESTAMP
+    );
   `);
   try {
     await db.exec(`
