@@ -3,34 +3,15 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   
-  // Development optimizations to prevent build issues
-  experimental: {
-    // Improve build stability
-    optimizePackageImports: ['@heroicons/react'],
-  },
+  // Ensure static files are properly served
+  trailingSlash: false,
   
-  // Webpack configuration for better development experience
-  webpack: (config, { dev, isServer }) => {
-    if (dev && !isServer) {
-      // Improve hot reloading stability
-      config.watchOptions = {
-        poll: 1000,
-        aggregateTimeout: 300,
-      };
-    }
-    
-    // Exclude backend directory from all builds
-    config.externals = config.externals || [];
-    config.externals.push('./backend/**');
-    
-    return config;
-  },
-  
+  // API rewrites for production
   async rewrites() {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_API_URL || 'https://labubu-collectibles.onrender.com'}/api/:path*`,
       },
     ];
   },
