@@ -46,6 +46,24 @@ router.get('/test', expressAsyncHandler(async (req, res) => {
   }
 }));
 
+// Force reseed database endpoint
+router.post('/reseed', expressAsyncHandler(async (req, res) => {
+  try {
+    const { seedDatabase } = require('../seed-data');
+    await seedDatabase();
+    res.json({
+      status: 'ok',
+      message: 'Database reseeded successfully'
+    });
+  } catch (error) {
+    console.error('Reseed error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+}));
+
 // GET /products - list all products with search and filtering
 router.get('/', expressAsyncHandler(async (req, res) => {
   // Only cache if no search/filter params
