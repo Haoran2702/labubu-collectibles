@@ -1,0 +1,10 @@
+backend/
+backend/**
+*.md
+deployment.md
+TODO.md
+README.md
+logs/
+.DS_Store
+.env
+.env.local
