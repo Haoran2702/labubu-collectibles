@@ -2,16 +2,16 @@ import { openDb } from './db';
 
 const products = [
   // Have a Seat
-  { name: 'Baba', collection: 'Have a Seat', price: 29.99, imageUrl: '/api/products/images/image_part_001.png' },
-  { name: 'Dada', collection: 'Have a Seat', price: 29.99, imageUrl: '/api/products/images/image_part_002.png' },
-  { name: 'Hehe', collection: 'Have a Seat', price: 29.99, imageUrl: '/api/products/images/image_part_003.png' },
-  { name: 'Ququ', collection: 'Have a Seat', price: 29.99, imageUrl: '/api/products/images/image_part_004.png' },
-  { name: 'Sisi', collection: 'Have a Seat', price: 29.99, imageUrl: '/api/products/images/image_part_005.png' },
-  { name: 'Zizi', collection: 'Have a Seat', price: 29.99, imageUrl: '/api/products/images/image_part_006.png' },
+  { name: 'Baba', collection: 'Have a Seat', price: 29.99, imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop&crop=center' },
+  { name: 'Dada', collection: 'Have a Seat', price: 29.99, imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=400&fit=crop&crop=center' },
+  { name: 'Hehe', collection: 'Have a Seat', price: 29.99, imageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=center' },
+  { name: 'Ququ', collection: 'Have a Seat', price: 29.99, imageUrl: 'https://images.unsplash.com/photo-1574634534894-89d7576c8259?w=400&h=400&fit=crop&crop=center' },
+  { name: 'Sisi', collection: 'Have a Seat', price: 29.99, imageUrl: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=400&fit=crop&crop=center' },
+  { name: 'Zizi', collection: 'Have a Seat', price: 29.99, imageUrl: 'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=400&h=400&fit=crop&crop=center' },
   { name: 'Bul (Secret)', collection: 'Have a Seat', price: 39.99, imageUrl: '/api/products/images/Bul.png.jpg' },
   { name: 'Box', collection: 'Have a Seat', price: 19.99, imageUrl: '/api/products/images/20240708_103610_362376_________1200x1200.jpg' },
   // Big Into Energy
-  { name: 'Love', collection: 'Big Into Energy', price: 27.99, imageUrl: '/api/products/images/image_macarons_001.png' },
+  { name: 'Love', collection: 'Big Into Energy', price: 27.99, imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=400&fit=crop&crop=center' },
   { name: 'Happiness', collection: 'Big Into Energy', price: 27.99, imageUrl: '/api/products/images/image_macarons_002.png' },
   { name: 'Loyalty', collection: 'Big Into Energy', price: 27.99, imageUrl: '/api/products/images/image_macarons_003.png' },
   { name: 'Serenity', collection: 'Big Into Energy', price: 27.99, imageUrl: '/api/products/images/image_macarons_004.png' },
