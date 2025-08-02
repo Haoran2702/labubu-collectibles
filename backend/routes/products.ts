@@ -497,6 +497,32 @@ router.delete('/:id', requireAuth, expressAsyncHandler(async (req, res, next) =>
   res.status(204).end();
 }));
 
+// Debug endpoint to check file system paths
+router.get('/debug-paths', expressAsyncHandler(async (req, res) => {
+  const path = require('path');
+  const fs = require('fs');
+  
+  try {
+    const cwd = process.cwd();
+    const imagePath = path.join(cwd, 'public', 'product_images');
+    const exists = fs.existsSync(imagePath);
+    let files = [];
+    if (exists) {
+      files = fs.readdirSync(imagePath);
+    }
+    
+    res.json({
+      cwd: cwd,
+      imagePath: imagePath,
+      exists: exists,
+      fileCount: files.length,
+      files: files.slice(0, 5)
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}));
+
 // GET /images/:filename - serve product images
 router.get('/images/:filename', expressAsyncHandler(async (req, res) => {
   const path = require('path');
