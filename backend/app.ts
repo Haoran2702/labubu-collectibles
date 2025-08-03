@@ -202,3 +202,4 @@ app.use('*', (req: express.Request, res: express.Response) => {
 
 export default app; // Railway deployment fix
 // Render deployment trigger
+// Force redeploy
