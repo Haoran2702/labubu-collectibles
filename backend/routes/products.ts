@@ -64,6 +64,41 @@ router.post('/reseed', expressAsyncHandler(async (req, res) => {
   }
 }));
 
+// Update image URLs to Unsplash demo links
+router.post('/update-images', expressAsyncHandler(async (req, res) => {
+  try {
+    const unsplashImages = [
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=400&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1574634534894-89d7576c8259?w=400&h=400&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=400&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=400&h=400&fit=crop&crop=center',
+    ];
+
+    const db = await openDb();
+    const products = await db.all('SELECT id FROM products');
+    
+    for (let i = 0; i < products.length; i++) {
+      const imageUrl = unsplashImages[i % unsplashImages.length];
+      await db.run('UPDATE products SET imageUrl = ? WHERE id = ?', imageUrl, products[i].id);
+    }
+    
+    await db.close();
+    
+    res.json({
+      status: 'ok',
+      message: `Updated ${products.length} products with Unsplash demo images`
+    });
+  } catch (error) {
+    console.error('Update images error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+}));
+
 // GET /products - list all products with search and filtering
 router.get('/', expressAsyncHandler(async (req, res) => {
   // Only cache if no search/filter params
@@ -183,7 +218,7 @@ router.get('/debug-paths', expressAsyncHandler(async (req, res) => {
       files: files.slice(0, 5)
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error instanceof Error ? error.message : 'Unknown error' });
   }
 }));
 
@@ -524,7 +559,7 @@ router.delete('/:id', requireAuth, expressAsyncHandler(async (req, res, next) =>
 }));
 
 // GET /images/:filename - serve product images
-router.get('/images/:filename', expressAsyncHandler(async (req, res) => {
+router.get('/images/:filename', expressAsyncHandler(async (req, res, next) => {
   const path = require('path');
   const fs = require('fs');
   
@@ -567,6 +602,7 @@ router.get('/images/:filename', expressAsyncHandler(async (req, res) => {
   } catch (error) {
     console.error('Error serving image:', error);
     res.status(500).json({ error: 'Failed to serve image' });
+    return;
   }
 }));
 
