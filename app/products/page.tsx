@@ -31,13 +31,38 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
 
+  // Function to fix broken image URLs with Unsplash demo images
+  const fixImageUrl = (imageUrl: string, productId: number) => {
+    // If the image URL is broken (starts with /product_images/ or /api/products/images/), replace with Unsplash
+    if (imageUrl && (imageUrl.startsWith('/product_images/') || imageUrl.startsWith('/api/products/images/'))) {
+      const unsplashImages = [
+        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop&crop=center',
+        'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=400&fit=crop&crop=center',
+        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=center',
+        'https://images.unsplash.com/photo-1574634534894-89d7576c8259?w=400&h=400&fit=crop&crop=center',
+        'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=400&fit=crop&crop=center',
+        'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=400&h=400&fit=crop&crop=center',
+      ];
+      return unsplashImages[productId % unsplashImages.length];
+    }
+    return imageUrl;
+  };
+
   useEffect(() => {
     async function fetchProducts() {
       setLoading(true);
       const res = await fetch("/api/products");
       const data = await res.json();
       // If backend returns { products: [...] }
-      setProducts(data.products || data);
+      const rawProducts = data.products || data;
+      
+      // Fix broken image URLs
+      const fixedProducts = rawProducts.map((product: Product) => ({
+        ...product,
+        imageUrl: fixImageUrl(product.imageUrl, product.id)
+      }));
+      
+      setProducts(fixedProducts);
       setLoading(false);
     }
     fetchProducts();
