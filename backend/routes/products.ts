@@ -64,8 +64,8 @@ router.post('/reseed', expressAsyncHandler(async (req, res) => {
   }
 }));
 
-// Update image URLs to Unsplash demo links
-router.post('/update-images', expressAsyncHandler(async (req, res) => {
+// Update image URLs to Unsplash demo links (no auth required)
+router.post('/fix-images', expressAsyncHandler(async (req, res) => {
   try {
     const unsplashImages = [
       'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop&crop=center',
