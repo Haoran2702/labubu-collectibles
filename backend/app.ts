@@ -90,7 +90,7 @@ const limiter = rateLimit({
 // CORS configuration for production
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://labubu-collectibles.com', 'https://www.labubu-collectibles.com']
+    ? ['https://labubu-collectibles.com', 'https://www.labubu-collectibles.com', 'http://localhost:3002']
     : true, // Allow all origins in development
   credentials: true,
   optionsSuccessStatus: 200,
@@ -103,7 +103,7 @@ app.use(cors(corsOptions));
 // Add CORS headers manually for development
 if (process.env.NODE_ENV !== 'production') {
   app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000, http://localhost:3002');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
     res.header('Access-Control-Allow-Credentials', 'true');
